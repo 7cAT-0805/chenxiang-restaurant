@@ -2,17 +2,37 @@
 document.addEventListener('DOMContentLoaded', function() {
     // 影片序幕控制
     const introOverlay = document.getElementById('video-intro');
-    if (introOverlay) {
-        // 在第 6 秒開始淡出
+    const introVideo = document.getElementById('intro-video');
+
+    if (introOverlay && introVideo) {
+        // 使用 timeupdate 事件精確監控播放進度
+        const checkVideoTime = () => {
+            if (introVideo.currentTime >= 6) {
+                // 達到 6 秒，執行淡出
+                introOverlay.classList.add('fade-out');
+                document.body.classList.remove('intro-active');
+                
+                // 動畫結束後完全移除，並停止監聽
+                setTimeout(() => {
+                    introOverlay.style.display = 'none';
+                }, 1500);
+                
+                introVideo.removeEventListener('timeupdate', checkVideoTime);
+            }
+        };
+
+        introVideo.addEventListener('timeupdate', checkVideoTime);
+
+        // 防呆機制：如果影片因為任何原因（如載入失敗）未能在 10 秒內播放到 6 秒，則強制關閉
         setTimeout(() => {
-            introOverlay.classList.add('fade-out');
-            document.body.classList.remove('intro-active');
-            
-            // 動畫結束後完全移除
-            setTimeout(() => {
-                introOverlay.style.display = 'none';
-            }, 1500); // 這裡的時間應與 CSS transition 時間一致
-        }, 6500);
+            if (introOverlay.style.display !== 'none') {
+                introOverlay.classList.add('fade-out');
+                document.body.classList.remove('intro-active');
+                setTimeout(() => {
+                    introOverlay.style.display = 'none';
+                }, 1500);
+            }
+        }, 10000);
     }
 
     // 獲取所有內部連結
