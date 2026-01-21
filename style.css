@@ -19,7 +19,6 @@
 
 html, body {
     height: 100%;
-    overflow: hidden;
 }
 
 body {
@@ -30,7 +29,35 @@ body {
     background-image: url('https://www.transparenttextures.com/patterns/handmade-paper.png');
     display: flex;
     flex-direction: column;
-    animation: fadeIn 0.5s ease-in;
+}
+
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 1.5s ease;
+}
+
+.video-overlay video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-overlay.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+body.intro-active {
+    overflow: hidden;
 }
 
 body.fade-out {

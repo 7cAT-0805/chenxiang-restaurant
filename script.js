@@ -1,5 +1,20 @@
 // 頁面切換轉場效果
 document.addEventListener('DOMContentLoaded', function() {
+    // 影片序幕控制
+    const introOverlay = document.getElementById('video-intro');
+    if (introOverlay) {
+        // 在第 6 秒開始淡出
+        setTimeout(() => {
+            introOverlay.classList.add('fade-out');
+            document.body.classList.remove('intro-active');
+            
+            // 動畫結束後完全移除
+            setTimeout(() => {
+                introOverlay.style.display = 'none';
+            }, 1500); // 這裡的時間應與 CSS transition 時間一致
+        }, 6500);
+    }
+
     // 獲取所有內部連結
     const links = document.querySelectorAll('a[href^="index.html"], a[href^="about.html"], a[href^="menu.html"], a[href^="recruitment.html"]');
     
